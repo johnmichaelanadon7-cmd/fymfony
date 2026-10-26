@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+{% block breadcrumb %}Categories{% endblock %}
+
+{% block body %}
+    <section class="welcome-row">
+        <div>
+            <p class="eyebrow">HARVEST BREAD CO. / CATALOG</p>
+            <h1>Categories</h1>
+            <p class="page-subtitle">Group your products so they are easy to find.</p>
+        </div>
+        <a class="primary-button" href="{{ path('admin_category_new') }}"><span>+</span> New category</a>
+    </section>
+
+    <section class="panel">
+        <div class="table-wrap">
+            <table class="crud-table">
+                <thead>
+                    <tr><th>NAME</th><th>DESCRIPTION</th><th>PRODUCTS</th><th class="col-actions">ACTIONS</th></tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td><strong>{{ category.name }}</strong></td>
+                        <td class="cell-wrap">{{ category.description|default('—') }}</td>
+                        <td>{{ category.products|length }}</td>
+                        <td class="col-actions">
+                            <div class="row-actions">
+                                <a class="btn btn--ghost btn--sm" href="{{ path('admin_category_show', {id: category.id}) }}">View</a>
+                                <a class="btn btn--ghost btn--sm" href="{{ path('admin_category_edit', {id: category.id}) }}">Edit</a>
+                                {{ include('category/_delete_form.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="empty-state">No categories found. Create your first one to get started.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

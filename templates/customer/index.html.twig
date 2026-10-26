@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customers{% endblock %}
+{% block breadcrumb %}Customers{% endblock %}
+
+{% block body %}
+    <section class="welcome-row">
+        <div>
+            <p class="eyebrow">HARVEST BREAD CO. / SALES</p>
+            <h1>Customers</h1>
+            <p class="page-subtitle">See who is buying from your bakery.</p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="table-wrap">
+            <table class="crud-table">
+                <thead>
+                    <tr><th>NAME</th><th>EMAIL</th><th>ORDERS</th><th>JOINED</th></tr>
+                </thead>
+                <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td><strong>{{ customer.name }}</strong></td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.orders|length }}</td>
+                        <td>{{ customer.createdAt|date('M j, Y') }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="4" class="empty-state">No customers yet. Customers will appear here once the Customer entity is added.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

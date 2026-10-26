@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+{% block breadcrumb %}Categories / {{ category.name }}{% endblock %}
+
+{% block body %}
+    <section class="welcome-row">
+        <div>
+            <p class="eyebrow">HARVEST BREAD CO. / CATALOG</p>
+            <h1>{{ category.name }}</h1>
+            <p class="page-subtitle">{{ category.description|default('No description.') }}</p>
+        </div>
+        <div class="row-actions">
+            <a class="btn btn--ghost" href="{{ path('admin_category_index') }}">← Back</a>
+            <a class="btn btn--primary" href="{{ path('admin_category_edit', {id: category.id}) }}">Edit</a>
+            {{ include('category/_delete_form.html.twig') }}
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Products in this category</h2><p>{{ category.products|length }} total</p></div>
+        </div>
+        <div class="table-wrap">
+            <table class="crud-table">
+                <thead><tr><th>NAME</th><th>PRICE</th><th>STOCK</th></tr></thead>
+                <tbody>
+                {% for product in category.products %}
+                    <tr>
+                        <td><a class="text-link" href="{{ path('admin_product_show', {id: product.id}) }}">{{ product.name }}</a></td>
+                        <td>₱{{ product.price|number_format(2) }}</td>
+                        <td>{{ product.stock }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="3" class="empty-state">No products in this category yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

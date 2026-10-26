@@ -1,0 +1,36 @@
+services:
+  webdev_mysql:
+    image: mysql:8.0
+    container_name: webdev_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3311:3306"
+    volumes:
+      - webdev_db_data:/var/lib/mysql
+    networks:
+      - webdev_network
+
+  webdev_phpmyadmin:
+    image: phpmyadmin
+    container_name: webdev_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: webdev_mysql
+    ports:
+      - "8081:80"
+    networks:
+      - webdev_network
+    depends_on:
+      - webdev_mysql
+
+volumes:
+  webdev_db_data:
+
+networks:
+  webdev_network:
+    driver: bridge

@@ -1,0 +1,42 @@
+{% set current = app.current_route ?? '' %}
+<aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ path('admin_dashboard') }}" aria-label="Harvest Bread Co. dashboard">
+        <span class="brand-mark">HB</span>
+        <span class="brand-name"><strong>HARVEST</strong><small>BREAD CO.</small></span>
+    </a>
+
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+        <a class="nav-item{{ (current starts with 'admin_dashboard') ? ' is-active' : '' }}" href="{{ path('admin_dashboard') }}">
+            <span class="nav-icon">▦</span><span>Dashboard</span>
+        </a>
+        <a class="nav-item{{ (current starts with 'admin_product') ? ' is-active' : '' }}" href="{{ path('admin_product_index') }}">
+            <span class="nav-icon">▧</span><span>Products</span>
+        </a>
+        <a class="nav-item{{ (current starts with 'admin_category') ? ' is-active' : '' }}" href="{{ path('admin_category_index') }}">
+            <span class="nav-icon">▣</span><span>Categories</span>
+        </a>
+        <a class="nav-item{{ (current starts with 'admin_order') ? ' is-active' : '' }}" href="{{ path('admin_order_index') }}">
+            <span class="nav-icon">▤</span><span>Orders</span>
+        </a>
+        <a class="nav-item{{ (current starts with 'admin_customer') ? ' is-active' : '' }}" href="{{ path('admin_customer_index') }}">
+            <span class="nav-icon">◉</span><span>Customers</span>
+        </a>
+        <div class="nav-item nav-item--disabled" aria-disabled="true" title="This page has not been created yet">
+            <span class="nav-icon">◫</span><span>Inventory</span><small>Soon</small>
+        </div>
+        <div class="nav-item nav-item--disabled" aria-disabled="true" title="This page has not been created yet">
+            <span class="nav-icon">▥</span><span>Reports</span><small>Soon</small>
+        </div>
+    </nav>
+
+    <div class="sidebar-label sidebar-label--lower">PREFERENCES</div>
+    <div class="nav-item nav-item--disabled" aria-disabled="true" title="This page has not been created yet">
+        <span class="nav-icon">⚙</span><span>Settings</span><small>Soon</small>
+    </div>
+
+    <div class="sidebar-bottom">
+        <div class="sidebar-help-icon">?</div>
+        <div><strong>Need help?</strong><span>Admin support</span></div>
+    </div>
+</aside>

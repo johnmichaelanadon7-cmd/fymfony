@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="form-actions">
+        <button class="btn btn--primary" type="submit">{{ button_label|default('Save') }}</button>
+        <a class="btn btn--ghost" href="{{ path('admin_category_index') }}">Cancel</a>
+    </div>
+{{ form_end(form) }}

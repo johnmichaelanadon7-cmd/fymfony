@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Orders{% endblock %}
+{% block breadcrumb %}Orders{% endblock %}
+
+{% block body %}
+    <section class="welcome-row">
+        <div>
+            <p class="eyebrow">HARVEST BREAD CO. / SALES</p>
+            <h1>Orders</h1>
+            <p class="page-subtitle">Track and update customer orders.</p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="table-wrap">
+            <table class="crud-table">
+                <thead>
+                    <tr><th>ORDER</th><th>CUSTOMER</th><th>DATE</th><th>ITEMS</th><th>TOTAL</th><th>STATUS</th></tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td><strong>{{ order.reference }}</strong></td>
+                        <td>{{ order.customerName }}</td>
+                        <td>{{ order.createdAt|date('M j, Y') }}</td>
+                        <td>{{ order.items|length }}</td>
+                        <td>₱{{ order.total }}</td>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6" class="empty-state">No orders yet. Orders will appear here once the Order entity is added.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

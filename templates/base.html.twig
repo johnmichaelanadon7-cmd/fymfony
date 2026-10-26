@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} | Harvest Bread Co.</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍞</text></svg>">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin-crud.css') }}">
+    {% endblock %}
+</head>
+<body>
+<div class="admin-shell">
+    {{ include('partials/_sidebar.html.twig') }}
+
+    <main class="main-content">
+        <header class="topbar">
+            <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-separator">/</span><strong>{% block breadcrumb %}Dashboard{% endblock %}</strong></div>
+            <div class="topbar-right">
+                {% block topbar_badge %}{% endblock %}
+                <div class="topbar-date">{{ "now"|date("F j, Y") }}</div>
+                <div class="admin-profile">
+                    <div class="profile-avatar">JM</div>
+                    <div class="profile-copy"><strong>Admin Manager</strong><span>Administrator</span></div>
+                    <span class="profile-chevron">⌄</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            {{ include('partials/_flashes.html.twig') }}
+
+            {% block body %}{% endblock %}
+
+            <footer class="page-footer"><span>© {{ "now"|date("Y") }} Harvest Bread Co.</span><span>Freshly baked. Carefully managed.</span></footer>
+        </div>
+    </main>
+</div>
+<div class="sidebar-scrim" id="sidebarScrim"></div>
+{% block javascripts %}
+    <script src="{{ asset('js/admin-dashboard.js') }}" defer></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+
+{% block topbar_badge %}
+    <span class="demo-badge"><span></span> Demo data</span>
+{% endblock %}
+
+{% block body %}
+    <section class="welcome-row">
+                    <div>
+                        <p class="eyebrow">HARVEST BREAD CO. / ADMIN</p>
+                        <h1>Good day, Admin <span>☀</span></h1>
+                        <p class="page-subtitle">Here’s what’s happening with your bakery today.</p>
+                    </div>
+                    <button class="primary-button" id="exportOrdersButton" type="button"><span>⇩</span> Export orders</button>
+                </section>
+
+                <section class="summary-grid" aria-label="Store summary">
+                    {% for card in summary %}
+                        <article class="summary-card">
+                            <div class="summary-topline">
+                                <span class="summary-title">{{ card.title }}</span>
+                                <span class="summary-icon summary-icon--{{ card.class }}">{{ card.symbol }}</span>
+                            </div>
+                            <div class="summary-value">{{ card.value }}</div>
+                            <p class="summary-note">{{ card.note }}</p>
+                        </article>
+                    {% endfor %}
+                </section>
+
+                <section class="main-panels">
+                    <article class="panel sales-panel">
+                        <div class="panel-heading">
+                            <div><h2>Sales overview</h2><p>Your store’s sales for the last 7 days</p></div>
+                            <span class="period-label">This week <span>⌄</span></span>
+                        </div>
+                        <div class="chart-legend"><span class="legend-dot"></span> Daily sales <span class="chart-caption">Illustrative amounts</span></div>
+                        <div class="sales-chart" aria-label="Illustrative weekly sales chart">
+                            {% for day in weekly_sales %}
+                                <div class="chart-column">
+                                    <span class="bar-amount">{{ day.amount }}</span>
+                                    <div class="bar-track"><div class="sales-bar{% if day.day == 'Sat' %} sales-bar--highlight{% endif %}" style="height: {{ day.height }}%"></div></div>
+                                    <span class="bar-day">{{ day.day }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </article>
+
+                    <article class="panel inventory-panel" id="low-stock">
+                        <div class="panel-heading">
+                            <div><h2>Low stock items</h2><p>Products that may need restocking</p></div>
+                            <span class="alert-count">{{ low_stock_items|length }} items</span>
+                        </div>
+                        <div class="stock-list">
+                            {% for item in low_stock_items %}
+                                <div class="stock-item">
+                                    <div class="product-thumb product-thumb--{{ loop.index }}">{% if loop.index == 1 %}🥐{% elseif loop.index == 2 %}🍞{% else %}🧁{% endif %}</div>
+                                    <div class="stock-product"><strong>{{ item.name }}</strong><span>{{ item.category }}</span><div class="stock-meter"><span style="width: {{ (item.stock / item.threshold * 100)|round }}%"></span></div></div>
+                                    <div class="stock-number"><strong>{{ item.stock }}</strong><span>left</span></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <p class="stock-footnote"><span>!</span> Check current inventory before restocking. Figures shown are samples.</p>
+                    </article>
+                </section>
+
+                <section class="panel orders-panel" id="recent-orders">
+                    <div class="panel-heading orders-heading">
+                        <div><h2>Recent orders</h2><p>Latest customer transactions in your store</p></div>
+                        <span class="order-count">{{ recent_orders|length }} sample orders</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table id="recentOrdersTable">
+                            <thead><tr><th>ORDER ID</th><th>CUSTOMER</th><th>DATE</th><th>ITEMS</th><th>TOTAL</th><th>STATUS</th></tr></thead>
+                            <tbody>
+                            {% for order in recent_orders %}
+                                <tr>
+                                    <td class="order-id">{{ order.id }}</td>
+                                    <td><div class="customer-cell"><span class="customer-avatar customer-avatar--{{ loop.index }}">{{ order.customer|split(' ')|map(n => n|first)|join|upper }}</span><strong>{{ order.customer }}</strong></div></td>
+                                    <td class="date-cell">{{ order.date }}</td>
+                                    <td>{{ order.items }} item{{ order.items == 1 ? '' : 's' }}</td>
+                                    <td class="amount-cell">{{ order.total }}</td>
+                                    <td><span class="status status--{{ order.status|lower }}">{{ order.status }}</span></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer"><span>Showing sample data only</span><span>Harvest Bread Co. Admin</span></div>
+                </section>
+{% endblock %}
