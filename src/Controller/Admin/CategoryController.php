@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,21 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CategoryController extends AbstractController
 {
     #[Route('', name: 'admin_category_index', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository): Response
-    {
+    public function index(
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository,
+    ): Response {
+        $categories = $categoryRepository->findBy([], ['name' => 'ASC']);
+        $emptyCategories = count(array_filter(
+            $categories,
+            static fn (Category $category): bool => $category->getProducts()->isEmpty(),
+        ));
+
         return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findBy([], ['name' => 'ASC']),
+            'categories' => $categories,
+            'category_count' => count($categories),
+            'product_count' => $productRepository->count([]),
+            'empty_category_count' => $emptyCategories,
         ]);
     }
 

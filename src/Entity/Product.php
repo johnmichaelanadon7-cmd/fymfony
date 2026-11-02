@@ -23,6 +23,9 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFilename = null;
+
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Assert\NotNull]
     #[Assert\PositiveOrZero]
@@ -68,6 +71,18 @@ class Product
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): static
+    {
+        $this->imageFilename = $imageFilename;
 
         return $this;
     }

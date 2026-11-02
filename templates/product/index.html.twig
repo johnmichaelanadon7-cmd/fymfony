@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+symfony server:start{% extends 'base.html.twig' %}
 
 {% block title %}Products{% endblock %}
 {% block breadcrumb %}Products{% endblock %}
@@ -16,13 +16,13 @@
     <section class="panel">
         <form class="filter-bar" method="get" action="{{ path('admin_product_index') }}">
             <label for="category-filter">Category</label>
-            <select id="category-filter" name="category">
+            <select id="category-filter" name="category" onchange="this.form.requestSubmit()" aria-label="Filter products by category">
                 <option value="">All categories</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}"{{ category.id == selected_category ? ' selected' : '' }}>{{ category.name }}</option>
                 {% endfor %}
             </select>
-            <button class="btn btn--ghost btn--sm" type="submit">Filter</button>
+            <noscript><button class="btn btn--ghost btn--sm" type="submit">Filter</button></noscript>
             {% if selected_category %}
                 <a class="text-link" href="{{ path('admin_product_index') }}">Clear</a>
             {% endif %}
@@ -31,11 +31,18 @@
         <div class="table-wrap">
             <table class="crud-table">
                 <thead>
-                    <tr><th>NAME</th><th>CATEGORY</th><th>PRICE</th><th>STOCK</th><th class="col-actions">ACTIONS</th></tr>
+                    <tr><th>IMAGE</th><th>NAME</th><th>CATEGORY</th><th>PRICE</th><th>STOCK</th><th class="col-actions">ACTIONS</th></tr>
                 </thead>
                 <tbody>
                 {% for product in products %}
                     <tr>
+                        <td>
+                            {% if product.imageFilename %}
+                                <img class="product-thumb" src="{{ asset('uploads/products/' ~ product.imageFilename) }}" alt="{{ product.name }}">
+                            {% else %}
+                                <span class="product-thumb product-thumb--empty">No image</span>
+                            {% endif %}
+                        </td>
                         <td><strong>{{ product.name }}</strong></td>
                         <td>{{ product.category.name }}</td>
                         <td class="amount-cell">₱{{ product.price|number_format(2) }}</td>
@@ -52,7 +59,7 @@
                         </td>
                     </tr>
                 {% else %}
-                    <tr><td colspan="5" class="empty-state">No products found.</td></tr>
+                    <tr><td colspan="6" class="empty-state">No products found.</td></tr>
                 {% endfor %}
                 </tbody>
             </table>

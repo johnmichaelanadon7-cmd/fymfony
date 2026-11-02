@@ -18,6 +18,11 @@
     </section>
 
     <section class="panel">
+        {% if product.imageFilename %}
+            <div class="product-detail-image">
+                <img src="{{ asset('uploads/products/' ~ product.imageFilename) }}" alt="{{ product.name }}">
+            </div>
+        {% endif %}
         <dl class="detail-list">
             <div><dt>Price</dt><dd>₱{{ product.price|number_format(2) }}</dd></div>
             <div>

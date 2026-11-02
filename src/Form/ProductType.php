@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -42,6 +43,20 @@ class ProductType extends AbstractType
                 'label' => 'Low-stock alert at',
                 'help' => 'Shows a low-stock warning when stock is at or below this number.',
                 'attr' => ['min' => 0],
+            ])
+            ->add('imageFile', FileType::class, [
+                'label' => 'Product image',
+                'mapped' => false,
+                'required' => false,
+                'help' => 'Upload a JPG, PNG, or WebP image (maximum 5 MB).',
+                'constraints' => [
+                    new \Symfony\Component\Validator\Constraints\Image(
+                        maxSize: '5M',
+                        mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+                        mimeTypesMessage: 'Please upload a JPG, PNG, or WebP image.',
+                    ),
+                ],
+                'attr' => ['accept' => 'image/jpeg,image/png,image/webp'],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',

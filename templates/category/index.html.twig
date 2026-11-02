@@ -13,7 +13,40 @@
         <a class="primary-button" href="{{ path('admin_category_new') }}"><span>+</span> New category</a>
     </section>
 
+    <section class="summary-grid" aria-label="Category summary">
+        <article class="summary-card">
+            <div class="summary-topline">
+                <span class="summary-title">TOTAL CATEGORIES</span>
+                <span class="summary-icon summary-icon--orange">▣</span>
+            </div>
+            <div class="summary-value">{{ category_count }}</div>
+            <p class="summary-note">Product groups in your catalog</p>
+        </article>
+        <article class="summary-card">
+            <div class="summary-topline">
+                <span class="summary-title">TOTAL PRODUCTS</span>
+                <span class="summary-icon summary-icon--blue">▧</span>
+            </div>
+            <div class="summary-value">{{ product_count }}</div>
+            <p class="summary-note">Products assigned to categories</p>
+        </article>
+        <article class="summary-card">
+            <div class="summary-topline">
+                <span class="summary-title">EMPTY CATEGORIES</span>
+                <span class="summary-icon summary-icon--red">!</span>
+            </div>
+            <div class="summary-value">{{ empty_category_count }}</div>
+            <p class="summary-note">Categories waiting for products</p>
+        </article>
+    </section>
+
     <section class="panel">
+        <div class="panel-heading category-panel-heading">
+            <div>
+                <h2>Your product categories</h2>
+                <p>Manage the groups customers use to browse your bakery products.</p>
+            </div>
+        </div>
         <div class="table-wrap">
             <table class="crud-table">
                 <thead>
