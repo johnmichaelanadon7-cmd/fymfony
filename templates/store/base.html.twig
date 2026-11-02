@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f1e8">
+    <meta name="description" content="Discover freshly baked breads, pastries, and sweet treats from Harvest Bread Co. in Dumaguete City.">
+    <title>{% block title %}Freshly Baked Goodness{% endblock %} | Harvest Bread Co.</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍞</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/store-home.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="store-site">
+    <div class="announcement-bar">
+        <span class="announcement-dot" aria-hidden="true"></span>
+        Freshly baked goodness in Dumaguete City
+        <span class="announcement-divider">·</span>
+        Made with care, shared with love
+    </div>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="store-brand" href="{{ path('store_home') }}#home" aria-label="Harvest Bread Co. home">
+                <span class="store-brand-mark" aria-hidden="true">HB</span>
+                <span class="store-brand-name"><strong>HARVEST</strong><small>BREAD CO.</small></span>
+            </a>
+
+            <button class="store-menu-toggle" id="storeMenuToggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="storeNavigation">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="store-navigation" id="storeNavigation" aria-label="Main navigation">
+                <a href="{{ path('store_home') }}#home">Home</a>
+                <a href="{{ path('store_home') }}#about">About</a>
+                <a href="{{ path('store_home') }}#products">Products</a>
+                <a href="{{ path('store_home') }}#location">Location</a>
+                <a href="{{ path('store_home') }}#journal">Blog</a>
+            </nav>
+
+            <a class="header-cta" href="{{ path('store_home') }}#products">Explore our menu <span aria-hidden="true">↗</span></a>
+        </div>
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-main">
+            <a class="store-brand footer-brand" href="{{ path('store_home') }}#home" aria-label="Harvest Bread Co. home">
+                <span class="store-brand-mark" aria-hidden="true">HB</span>
+                <span class="store-brand-name"><strong>HARVEST</strong><small>BREAD CO.</small></span>
+            </a>
+            <p>Good bread brings people together. Thank you for making us part of your day.</p>
+            <a class="footer-back-top" href="{{ path('store_home') }}#home">Back to top ↑</a>
+        </div>
+        <div class="footer-bottom">
+            <span>© {{ "now"|date("Y") }} Harvest Bread Co. All rights reserved.</span>
+            <span>Freshly baked. Carefully made.</span>
+        </div>
+    </footer>
+
+    <script src="{{ asset('js/store-home.js') }}" defer></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

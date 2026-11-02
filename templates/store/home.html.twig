@@ -1,0 +1,139 @@
+{% extends 'store/base.html.twig' %}
+
+{% block title %}Freshly Baked Goodness{% endblock %}
+
+{% block body %}
+    <section class="hero-section" id="home">
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <p class="eyebrow"><span></span> A LITTLE WARMTH IN EVERY BITE</p>
+                <h1>Fresh from our oven, <em>made for you.</em></h1>
+                <p class="hero-description">From soft, familiar favorites to sweet little treats, find something delicious to make your day feel special.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#products">Explore our products <span aria-hidden="true">↗</span></a>
+                    <a class="text-link" href="#about">Get to know us <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="hero-note">
+                    <span class="hero-note-icon" aria-hidden="true">✳</span>
+                    <span><strong>Made with care</strong><small>Little moments, baked fresh</small></span>
+                </div>
+            </div>
+            <div class="hero-visual" aria-label="Fresh artisan breads displayed in a bakery">
+                <div class="hero-photo"></div>
+                <div class="hero-sticker"><span>FRESH</span><strong>BAKED</strong><small>WITH LOVE</small></div>
+                <div class="hero-caption"><span class="caption-line"></span><span>Good things are baking.</span></div>
+            </div>
+        </div>
+        <div class="hero-bottom-line"><span>GOOD MORNING, DUMAGUETE</span><span>BAKED FOR YOUR EVERYDAY MOMENTS</span></div>
+    </section>
+
+    <section class="promise-strip" aria-label="Our bakery values">
+        <div class="promise-item"><span class="promise-icon" aria-hidden="true">✳</span><span><strong>Freshly made</strong><small>For everyday cravings</small></span></div>
+        <div class="promise-item"><span class="promise-icon" aria-hidden="true">♡</span><span><strong>Made with care</strong><small>Thoughtful in every batch</small></span></div>
+        <div class="promise-item"><span class="promise-icon" aria-hidden="true">☼</span><span><strong>Perfect for sharing</strong><small>Little treats, happy moments</small></span></div>
+    </section>
+
+    <section class="about-section section-wrap" id="about">
+        <div class="about-image-wrap">
+            <div class="about-image" role="img" aria-label="Assorted freshly baked artisan breads"></div>
+            <div class="about-image-label"><span>THE HARVEST WAY</span><strong>Simple joys, baked daily.</strong></div>
+        </div>
+        <div class="about-copy">
+            <p class="eyebrow">A BAKERY FOR EVERYDAY JOY</p>
+            <h2>A little goodness goes a <em>long way.</em></h2>
+            <p>At Harvest Bread Co., we believe the best moments are often the simple ones: a warm bread in the morning, a sweet treat shared with a friend, or something delicious brought home to family.</p>
+            <p>Our menu brings together bakery favorites and comforting treats, ready to make your everyday moments a little sweeter.</p>
+            <a class="underlined-link" href="#products">Find your new favorite <span aria-hidden="true">→</span></a>
+        </div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="section-wrap">
+            <div class="section-heading products-heading">
+                <div>
+                    <p class="eyebrow">A FRESH BATCH OF FAVORITES</p>
+                    <h2>Something good is <em>waiting.</em></h2>
+                    <p class="section-subtitle">Browse our bakery selection and find a treat for today.</p>
+                </div>
+                <span class="menu-count">{{ products|length }} <small>items shown</small></span>
+            </div>
+
+            {% if categories is not empty %}
+                <div class="category-filter" aria-label="Filter products by category">
+                    <a class="category-chip{{ selected_category is null ? ' is-active' : '' }}" href="{{ path('store_home') }}#products">All products</a>
+                    {% for category in categories %}
+                        <a class="category-chip{{ selected_category and selected_category.id == category.id ? ' is-active' : '' }}" href="{{ path('store_home', {category: category.id}) }}#products">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if selected_category %}
+                <p class="filter-result">Showing products in <strong>{{ selected_category.name }}</strong>. <a href="{{ path('store_home') }}#products">Clear filter</a></p>
+            {% endif %}
+
+            {% if products is not empty %}
+                <div class="product-grid">
+                    {% for product in products %}
+                        <article class="product-card">
+                            <div class="product-card-image">
+                                {% if product.imageFilename %}
+                                    <img src="{{ asset('uploads/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" loading="lazy">
+                                {% else %}
+                                    {% set categoryName = product.category ? product.category.name|lower : '' %}
+                                    <div class="product-placeholder" aria-label="No product photo uploaded">
+                                        {% if 'cake' in categoryName %}🍰{% elseif 'cookie' in categoryName %}🍪{% elseif 'donut' in categoryName %}🍩{% elseif 'pastr' in categoryName %}🥐{% elseif 'sweet' in categoryName %}🥯{% else %}🍞{% endif %}
+                                    </div>
+                                {% endif %}
+                                <span class="product-category-tag">{{ product.category ? product.category.name : 'Bakery favorite' }}</span>
+                            </div>
+                            <div class="product-card-copy">
+                                <h3>{{ product.name }}</h3>
+                                <p>{{ product.description ? product.description|striptags|slice(0, 88) : 'A freshly baked favorite, ready to brighten your day.' }}{% if product.description and product.description|length > 88 %}…{% endif %}</p>
+                                <div class="product-card-bottom"><strong>₱{{ product.price|number_format(2, '.', ',') }}</strong><span>Freshly made</span></div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-products">
+                    <span aria-hidden="true">🥖</span>
+                    <h3>{% if selected_category %}No available products in this category yet.{% else %}Our display is getting ready.{% endif %}</h3>
+                    <p>{% if selected_category %}Please check another category or come back soon for more freshly baked favorites.{% else %}Products with available stock will appear here once they have been added in the admin dashboard.{% endif %}</p>
+                    {% if selected_category %}<a class="button button-outline" href="{{ path('store_home') }}#products">View all products</a>{% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="quote-band">
+        <div class="quote-mark" aria-hidden="true">“</div>
+        <p>There is always room for something freshly baked.</p>
+        <span>YOUR EVERYDAY BAKERY</span>
+    </section>
+
+    <section class="journal-section section-wrap" id="journal">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">A NOTE FROM OUR KITCHEN</p>
+                <h2>Little things worth <em>savoring.</em></h2>
+            </div>
+        </div>
+        <div class="journal-grid">
+            <article class="journal-card journal-card-one"><span>01 / THE MORNING RITUAL</span><h3>Make room for a slower morning.</h3><p>Pair your favorite bread with a warm drink and take a moment for yourself.</p></article>
+            <article class="journal-card journal-card-two"><span>02 / MADE TO SHARE</span><h3>Good treats bring people closer.</h3><p>Bring home a little something sweet for the people who make your day.</p></article>
+            <article class="journal-card journal-card-three"><span>03 / SIMPLE PLEASURES</span><h3>Find joy in the everyday.</h3><p>A familiar bakery favorite can turn an ordinary break into a happy one.</p></article>
+        </div>
+    </section>
+
+    <section class="visit-section" id="location">
+        <div class="visit-inner">
+            <div class="visit-copy">
+                <p class="eyebrow">COME SAY HELLO</p>
+                <h2>Your next favorite bite is <em>closer than you think.</em></h2>
+                <p>Drop by Harvest Bread Co. at Robinsons Place Dumaguete and discover something freshly baked for your day.</p>
+                <a class="button button-light" href="https://www.google.com/maps/search/?api=1&query=Robinsons+Place+Dumaguete" target="_blank" rel="noopener noreferrer">Find us on the map <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="visit-art" aria-hidden="true"><span class="visit-sun"></span><span class="visit-bread">🍞</span><span class="visit-sparkle sparkle-one">✳</span><span class="visit-sparkle sparkle-two">✦</span></div>
+        </div>
+    </section>
+{% endblock %}
